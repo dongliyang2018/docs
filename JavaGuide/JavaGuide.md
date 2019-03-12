@@ -29,7 +29,7 @@ keys的速度非常快，但是在一个大的数据库中使用它仍然可能�
 
 ## 7. Spark
 
-## 8. ZooKeepr
+## 8. ZooKeeper
 
 ## 9. Mysql
 
