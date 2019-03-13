@@ -1,9 +1,10 @@
 # JavaGuide
 
 ## 1. Java
-### 1.1 什么是静态代理、动态代理，它们的区别是什么?
 
-### 1.2 HashMap为什么不能用于高并发?
+### 1.1 什么是静态代理、动态代理，它们的区别是什么？
+
+### 1.2 HashMap为什么不能用于高并发？
 
 ### 1.3 创建线程池的ThreadPoolExecutor的构造方法的参数说明一下。
 
@@ -21,10 +22,7 @@
 2. `CachedThreadPool`和`ScheduledThreadPool`
 允许的创建线程数量为Integer.MAX_VALUE，可能会创建大量的线程，从而导致OOM。
 
-
-## 2. Spring
-
-### 2.1 Spring事务@Transactional注解，什么情况下会不起作用，不回滚?
+### 2.1 Spring事务@Transactional注解，什么情况下会不起作用，不回滚？
 
 1. 数据库引擎要支持事务，如果是MySQL，注意表要使用支持事务的引擎，比如InnoDB。
 MyISAM引擎不支持事务。
@@ -36,11 +34,14 @@ MyISAM引擎不支持事务。
 5. Spring是否扫描到你的这个包。
 6. 异常是不是都被catch了。
 
+
 ## 3. Redis
 
 ### 3.1 keys命令
+
 `keys pattern`，时间复杂度：O(N)，N为数据库中key的数量。
 查找所有符合给定模式`pattern`的key，比如说：
+
 - `keys *` 匹配数据库中所有`key`。
 - `keys h?llo` 匹配`hello`，`hallo`和`hxllo`等。
 - `keys h*llo` 匹配`hllo`和`heeeeello`等。
@@ -51,14 +52,20 @@ keys的速度非常快，但是在一个大的数据库中使用它仍然可能�
 影响redis的性能。
 
 如何解决这个问题? 使用scan命令。
-### 3.2 Scan命令
 
+### 3.2 Scan命令
 
 ### 3.3 Redis事务的原理
 
 ## 4. Elasticsearch
 
+### 4.1 Elasticsearch如何进行大数据量数据迁移?
+
 ## 5. RabbitMQ
+
+### 5.1 如何确保消息不丢失?
+
+### 5.2 如何确保消息不重复消费?
 
 ## 6. Docker
 
@@ -73,8 +80,11 @@ keys的速度非常快，但是在一个大的数据库中使用它仍然可能�
 ## 11. Linux Shell
 
 ### 11.1 查看进程的命令是什么?
+
 `ps`命令，常用的是`ps -ef | grep 关键字`。
+
 ### 11.2 查看端口的命令是什么?
+
 `netstat`命令，查看端口信息。
 
 ## 12. Kubernetes
