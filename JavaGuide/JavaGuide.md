@@ -8,16 +8,18 @@
 ### 1.3 创建线程池的ThreadPoolExecutor的构造方法的参数说明一下。
 
 ### 1.4 JDK Executors提供的几个线程池了解吗，使用JDK提供的线程池会有什么问题？
-`FixedThreadPool` 
-`SingleThreadPool`
-`CachedThreadPool`
-`ScheduledThreadPool`
+
+- `FixedThreadPool` 
+- `SingleThreadPool`
+- `CachedThreadPool`
+- `ScheduledThreadPool`
 
 存在的问题
-1) `FixedThreadPool`和`SingleThreadPool`
- 允许的请求队列长度为Integer.MAX_VALUE，可能会堆积大量的请求，从而导致OOM。
-2) `CachedThreadPool`和`ScheduledThreadPool`
- 允许的创建线程数量为Integer.MAX_VALUE，可能会创建大量的线程，从而导致OOM。
+
+1. `FixedThreadPool`和`SingleThreadPool`
+允许的请求队列长度为Integer.MAX_VALUE，可能会堆积大量的请求，从而导致OOM。
+2. `CachedThreadPool`和`ScheduledThreadPool`
+允许的创建线程数量为Integer.MAX_VALUE，可能会创建大量的线程，从而导致OOM。
 
 
 ## 2. Spring
@@ -71,8 +73,8 @@ keys的速度非常快，但是在一个大的数据库中使用它仍然可能�
 ## 11. Linux Shell
 
 ### 11.1 查看进程的命令是什么?
-ps命令，常用的是`ps -ef | grep 关键字`。
+`ps`命令，常用的是`ps -ef | grep 关键字`。
 ### 11.2 查看端口的命令是什么?
-netstat命令，查看端口信息。
+`netstat`命令，查看端口信息。
 
 ## 12. Kubernetes
