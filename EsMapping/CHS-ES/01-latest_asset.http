@@ -1,0 +1,159 @@
+@host=http://192.168.186.135:9200
+@index=latest_asset
+@type={{index}}
+@json=Content-Type:application/json
+
+###
+#创建索引
+curl -X PUT {{host}}/{{index}} -H {{json}} -d '
+{
+    "settings": {
+        "number_of_shards" :   5,
+        "number_of_replicas" : 0
+    }
+}'
+
+###
+curl -X DELETE {{host}}/{{index}}
+
+###
+#创建类型
+curl -X PUT {{host}}/{{index}}/{{type}}/_mapping -H {{json}} -d '
+{
+  "properties":{
+    "assetId":{ "type":"keyword" },
+    "version":{ "type":"long" },
+    "assetName":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "assetCode":{ "type":"keyword" },
+    "assetIp": { "type":"keyword" },
+    "isDeleted": { "type":"integer" },
+    "assetTypeCode": { "type":"keyword" },
+    "assetTypeFullName": { "type":"text","fields":{ "raw":{ "type":"keyword" } },"analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "maintainInfo":{ 
+        "type":"object",
+        "properties":{
+            "version":{ "type":"long" },
+            "assetUseDesc": { "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+            "assetState":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+            "region":{ "type":"text","fields":{ "raw": { "type":"keyword" } },"analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+            "physicalPosition":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+            "assetIpv6":{ "type":"keyword" }
+        }
+    },
+    "systemInfo":{
+        "type":"object",
+        "properties":{
+            "version":{ "type":"long" },
+            "deviceName":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+            "osName":{ "type":"text","fields":{ "raw":{ "type":"keyword" } },"analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+            "osVersion":{ "type":"text","fields":{ "raw":{ "type":"keyword" } },"analyzer":"ik_max_word", "search_analyzer":"ik_max_word" }
+        }
+    },
+    "hardwareInfo":{
+        "type":"object",
+        "properties":{
+            "version":{ "type":"long" },
+            "hwFactory":{ "type":"text","fields":{ "raw":{ "type":"keyword" } },"analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+            "hwModel":{ "type":"text","fields":{ "raw":{ "type":"keyword" } },"analyzer":"ik_max_word", "search_analyzer":"ik_max_word" }
+        }
+    },
+    "port":{
+        "type":"nested",
+        "properties":{
+            "version":{ "type":"long" },
+            "protocol":{ "type":"text","fields":{ "raw":{ "type":"keyword" } },"analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+            "localAddr":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+            "port":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+            "connState":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" }
+        }
+    },
+    "proc":{
+        "type":"nested",
+        "properties":{
+            "version":{ "type":"long" },
+            "procName":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" }
+        }
+    },
+    "startup":{
+        "type":"nested",
+        "properties":{
+            "version":{ "type":"long" },
+            "startName":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" }
+        }
+    },
+    "srv":{
+        "type":"nested",
+        "properties":{
+            "version":{ "type":"long" },
+            "srvName":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" }
+        }
+    },
+    "network":{
+        "type":"nested",
+        "properties":{
+            "version":{ "type":"long" },
+            "protocol":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" }
+        }
+    },
+    "sw":{
+        "type":"nested",
+        "properties":{
+            "version":{ "type":"long" },
+            "swName":{ "type":"text","fields":{ "raw":{ "type":"keyword" } },"analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+            "swVer":{ "type":"text","fields":{ "raw":{ "type":"keyword" } },"analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+            "swType":{ "type":"text","fields":{ "raw":{ "type":"keyword" } },"analyzer":"ik_max_word", "search_analyzer":"ik_max_word" }
+        }
+    },
+    "configInfo":{
+        "type":"object",
+        "properties":{
+            "version":{ "type":"long" },
+            "allNonCount":{ "type":"integer" },
+            "config":{
+                "type":"nested",
+                "properties":{
+                    "appId":{ "type":"keyword" },
+                    "checkItemId": { "type":"keyword" },
+                    "checkItemName": { "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" }
+                }
+            }
+        }
+    },
+    "weakpwdInfo":{
+        "type":"object",
+        "properties":{
+            "version":{ "type":"long" },
+            "allWeakCount":{ "type":"integer" },
+            "weakpwd":{
+                "type":"nested",
+                "properties":{
+                    "appId":{ "type":"keyword" },
+                    "accountName":{ "type":"keyword" },
+                    "weakpwdType":{ "type":"keyword" }
+                }
+            }
+        }
+    },
+    "vulInfo":{
+        "type":"object",
+        "properties":{
+            "version":{ "type":"long" },
+            "allVulCount":{ "type":"integer" },
+            "highVulCount":{ "type":"integer" },
+            "mediumVulCount":{ "type":"integer" },
+            "lowVulCount":{ "type":"integer" },
+            "vul":{
+                "type":"nested",
+                "properties":{
+                    "vulName":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+                    "vulCve":{ "type":"keyword" },
+                    "appId":{ "type":"keyword" },
+                    "level":{ "type":"keyword" },
+                    "product":{ "type":"keyword" }
+                }
+            }
+        }
+    }
+  }
+}
+'

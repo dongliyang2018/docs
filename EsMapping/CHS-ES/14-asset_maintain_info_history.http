@@ -1,0 +1,49 @@
+@host=http://192.168.186.135:9200
+@index=asset_maintain_info_history
+@type={{index}}
+@json=Content-Type:application/json
+
+###
+#创建索引
+curl -X PUT {{host}}/{{index}} -H {{json}} -d '
+{
+    "settings": {
+        "number_of_shards" :   5,
+        "number_of_replicas" : 0
+    }
+}'
+
+###
+curl -X DELETE {{host}}/{{index}}
+
+###
+#创建类型
+curl -X PUT {{host}}/{{index}}/{{type}}/_mapping -H {{json}} -d '
+{
+  "properties":{
+    "assetId":{ "type":"keyword" },
+    "version":{ "type":"long" },
+    "assetUseDesc":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "assetState":{ "type":"keyword" },
+    "netPosition": { "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "securityZone": { "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "region": { "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "physicalPosition":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "cabinetPosition":{ "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "company": { "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "department": { "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "profession": { "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "publicIp":{ "type":"keyword" },
+    "privateIp": { "type":"keyword" },
+    "assetIpv6": { "type":"keyword" },
+    "administrator": { "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "administratorPhone":{ "type":"keyword" },
+    "administratorTel":{ "type":"keyword" },
+    "administratorQq": { "type":"keyword" },
+    "acceptanceState": { "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "ownership": { "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "hostIp": { "type":"keyword" },
+    "installPath": { "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" }
+  }
+}
+'

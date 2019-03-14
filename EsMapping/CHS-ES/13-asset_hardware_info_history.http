@@ -1,0 +1,38 @@
+@host=http://192.168.186.135:9200
+@index=asset_hardware_info_history
+@type={{index}}
+@json=Content-Type:application/json
+
+###
+#创建索引
+curl -X PUT {{host}}/{{index}} -H {{json}} -d '
+{
+    "settings": {
+        "number_of_shards" :   5,
+        "number_of_replicas" : 0
+    }
+}'
+
+###
+curl -X DELETE {{host}}/{{index}}
+
+###
+#创建类型
+curl -X PUT {{host}}/{{index}}/{{type}}/_mapping -H {{json}} -d '
+{
+  "properties":{
+    "assetId":{ "type":"keyword" },
+    "version":{ "type":"long" },
+    "macAddr":{ "type":"keyword" },
+    "mainboardModel":{ "type":"keyword" },
+    "mainboardSn": { "type":"keyword" },
+    "hwFactory": { "type":"text","analyzer":"ik_max_word", "search_analyzer":"ik_max_word" },
+    "hwModel": { "type":"keyword" },
+    "cpuFactory": { "type":"keyword" },
+    "cpuModel": { "type":"keyword" },
+    "procMem": { "type":"keyword" },
+    "hardDisk": { "type":"keyword" },
+    "diskFree": { "type":"keyword" }
+  }
+}
+'

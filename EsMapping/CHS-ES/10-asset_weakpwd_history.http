@@ -1,0 +1,38 @@
+@host=http://192.168.186.135:9200
+@index=asset_weakpwd_history
+@type={{index}}
+@json=Content-Type:application/json
+
+###
+#创建索引
+
+curl -X PUT {{host}}/{{index}} -H {{json}} -d '
+{
+    "settings": {
+        "number_of_shards" :   5,
+        "number_of_replicas" : 0
+    }
+}'
+
+###
+curl -X DELETE {{host}}/{{index}}
+
+###
+#创建类型
+curl -X PUT {{host}}/{{index}}/{{type}}/_mapping -H {{json}} -d '
+{
+  "properties":{
+    "assetId":{ "type":"keyword" },
+    "version":{ "type":"long" },
+    "allWeakCount":{ "type":"integer" },
+    "weakpwd":{
+        "type":"nested",
+        "properties":{
+            "appId":{ "type":"keyword" },
+            "accountName":{ "type":"keyword" },
+            "weakpwdType":{ "type":"keyword" }
+        }
+    }
+  }
+}
+'

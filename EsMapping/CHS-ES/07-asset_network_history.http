@@ -1,0 +1,44 @@
+@host=http://192.168.186.135:9200
+@index=asset_network_history
+@type={{index}}
+@json=Content-Type:application/json
+
+###
+#创建索引
+curl -X PUT {{host}}/{{index}} -H {{json}} -d '
+{
+    "settings": {
+        "number_of_shards" :   5,
+        "number_of_replicas" : 0
+    }
+}'
+
+###
+curl -X DELETE {{host}}/{{index}}
+
+###
+#创建类型
+curl -X PUT {{host}}/{{index}}/{{type}}/_mapping -H {{json}} -d '
+{
+  "properties":{
+    "assetId":{ "type":"keyword" },
+    "version":{ "type":"long" },
+    "collectCount":{ "type":"integer" },
+    "collect":{
+        "type":"nested",
+        "properties":{
+            "connType":{ "type":"keyword" },
+            "protocol":{ "type":"keyword" },
+            "localAddr":{ "type":"keyword" },
+            "localPort":{ "type":"keyword" },
+            "remoteAddr":{ "type":"keyword" },
+            "remotePort":{ "type":"keyword" },
+            "connState":{ "type":"keyword" },
+            "procId":{ "type":"keyword" },
+            "procName":{ "type":"keyword" },
+            "belongTo":{ "type":"keyword" }
+        }
+    }
+  }
+}
+'
